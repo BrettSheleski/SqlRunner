@@ -1,0 +1,51 @@
+﻿<Window x:Class="SqlRunner.WPF.MainWindow.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SqlRunner.WPF"
+        xmlns:converters="clr-namespace:SqlRunner.WPF.Converters"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Window.Resources>
+        <converters:BoolToVisibilityConverter x:Key="boolToVisibility" />
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <Button Command="{Binding OpenFilesCommand}" Content="Open Files" HorizontalAlignment="Left" VerticalAlignment="Top"  />
+            <Button Command="{Binding StartCommand}" Content="Start" HorizontalAlignment="Left" VerticalAlignment="Top"  />
+        </StackPanel>
+
+        <ListView ItemsSource="{Binding OpenedFiles}" Grid.Row="1" SelectionMode="Single" SelectedItem="{Binding SelectedFile, Mode=TwoWay}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition  Height="Auto"/>
+                            <RowDefinition  Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Binding Filename}" />
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1" Visibility="{Binding IsExecuting, Converter={StaticResource boolToVisibility}}">
+                            <TextBlock Text="Executing" />
+                            <ProgressBar Width="100" Value="{Binding CompletionPercent}" Minimum="0" Maximum="1" Visibility="{Binding IsExecuting, Converter={StaticResource boolToVisibility}}" />
+                        </StackPanel>
+
+                        <TextBlock Text="ERROR!" Grid.Column="1" Visibility="{Binding IsError, Converter={StaticResource boolToVisibility}}" HorizontalAlignment="Right" />
+
+                        <TextBlock Foreground="Red" Text="{Binding ExceptionMessage}" Grid.ColumnSpan="2" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+        </ListView>
+    </Grid>
+</Window>

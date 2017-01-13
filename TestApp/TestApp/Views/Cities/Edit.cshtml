@@ -1,0 +1,38 @@
+﻿@model TestApp.geo.City.EditViewModel
+
+<h2>Edit</h2>
+
+
+@using (var form = Bootstrap.BeginForm(FormType.Horizontal))
+{
+    @Html.HiddenFor(m => m.City.Id)
+
+    @Bootstrap.FormGroupFor(m => m.City.Name).Control(Bootstrap.Input())
+    @Bootstrap.FormGroupFor(m => m.City.AsciiName).Control(Bootstrap.Input())
+    
+    @Bootstrap.FormGroupFor(m => m.City.Elevation).Control(Bootstrap.Input())
+    @Bootstrap.FormGroupFor(m => m.City.GeonameId).Control(Bootstrap.Input())
+    @Bootstrap.FormGroupFor(m => m.City.IsActive).Control(Bootstrap.Checkbox())
+    @Bootstrap.FormGroupFor(m => m.City.Latitude).Control(Bootstrap.Input())
+    @Bootstrap.FormGroupFor(m => m.City.Longitude).Control(Bootstrap.Input())
+    @Bootstrap.FormGroupFor(m => m.City.Population).Control(Bootstrap.Input())
+    @Bootstrap.FormGroupFor(m => m.City.StateId).Control(Bootstrap.Input())
+    @Bootstrap.FormGroupFor(m => m.City.Timezone).Control(Bootstrap.Input())
+
+    @*using (form.BeginFieldset("Fieldset two"))
+        {
+            @form.GroupFor(m => m.IntegerField, "Label 2")
+                .Control(Bootstrap.InputInt().Size(0, 3, 3, 3, 3))
+            @form.GroupFor(m => m.BooleanField)
+                .Control(Bootstrap.Checkbox("checkbox text"))
+        }
+        using (form.Group().BeginContent())
+        {
+            @Bootstrap.Button(ButtonType.SuccessGreen, "Save")
+            @Bootstrap.Button(ButtonType.SecondaryWhite, "Cancel").Href("/list")
+        }*@
+    
+    <button type="submit">
+        @Bootstrap.Icon(IconType.Save)&nbsp;Save    
+    </button>
+}

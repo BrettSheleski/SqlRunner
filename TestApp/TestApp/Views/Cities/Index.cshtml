@@ -1,0 +1,69 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<div ng-app="MyApp" ng-controller="MyController">
+
+
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    State
+                </th>
+                <th>
+                    Country
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="city in cities">
+                <td>
+                    <a href="/Cities/Edit/{{city.Id}}">
+                        {{city.Name}}
+                    </a>
+                    
+                </td>
+                <td>{{city.StateId}}</td>
+                <td>{{city.CountryCode}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<script src="~/Scripts/angular.min.js"></script>
+
+<script type="text/javascript">
+    (function () {
+
+
+        var app = angular.module('MyApp', []);
+        var url = "http://localhost:15780/api/CitiesApi"
+
+        app.controller("MyController",
+        function MyController($scope, $http) {
+            $scope.cities = [];
+
+            $scope.getCities = function () {
+
+
+                $http.get(url).then(function (response) {
+                    $scope.cities = response.data.Cities;
+                });
+
+            };
+
+            $scope.getCities();
+
+        });
+
+    })();
+    
+</script>

@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:SqlRunner"
+             xmlns:converters="clr-namespace:SqlRunner.Converters"
+             x:Class="SqlRunner.MainPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:JobScriptStatusToBoolConverter Status="Error" x:Key="isError" />
+            <converters:JobScriptStatusToBoolConverter Status="Executing" x:Key="isExecuting" />
+            <converters:JobScriptStatusToBoolConverter Status="Queued" x:Key="isQueued" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <ListView Grid.Column="1" ItemsSource="{Binding Scripts}" HasUnevenRows="True">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition  Height="Auto"/>
+                                <RowDefinition  Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Label Text="{Binding Script.Name}" />
+
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="End" Grid.Column="1" IsVisible="{Binding Script.Status, Converter={StaticResource isExecuting}}">
+                                <Label Text="Executing" />
+                                <ProgressBar WidthRequest="100" Progress="{Binding CompletionPercent}" />
+                            </StackLayout>
+
+                            <Label Text="ERROR!" Grid.Column="1" HorizontalOptions="End" IsVisible="{Binding Script.Status, Converter={StaticResource isError}}" />
+                            <Label TextColor="Red" Text="{Binding ExceptionMessage}" Grid.ColumnSpan="2" Grid.Row="1" IsVisible="{Binding Script.Status, Converter={StaticResource isError}}" />
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            
+        </ListView>
+
+        <StackLayout Grid.Row="1" Grid.Column="1" HorizontalOptions="End" Orientation="Horizontal">
+            <Button Text="Open" Command="{Binding SelectFilesCommand}" />
+            <Button Text="Clear" Command="{Binding ClearScriptsCommand}" />
+        </StackLayout>
+
+        <Button Text="GO!" HorizontalOptions="Center" VerticalOptions="Center" Grid.Row="2" Grid.Column="1" />
+
+
+    </Grid>
+
+</ContentPage>
