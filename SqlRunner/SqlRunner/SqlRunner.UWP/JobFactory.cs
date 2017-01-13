@@ -11,10 +11,15 @@ namespace SqlRunner.UWP
     {
         public IJob CreateJob(IEnumerable<IJobScript> scripts)
         {
-            
-            return new 
 
+            var job = new Job();
 
+            foreach(var script in scripts)
+            {
+                job.Scripts.Add(script);
+            }
+
+            return job;
         }
     }
 }
